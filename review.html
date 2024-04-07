@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hotel Review</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+  }
+  .rating > label {
+    display: inline-block;
+    padding: 0 1px;
+    position: relative;
+    cursor: pointer;
+  }
+  .rating > label:hover:before,
+  .rating > label:hover ~ label:before,
+  .rating > input:checked ~ label:before {
+    content: "\2605";
+    position: absolute;
+    color: gold;
+  }
+  .rating > label:before {
+    content: "\2606";
+    position: absolute;
+    color: lightgrey;
+  }
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #45a049;
+  }
+  .review {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+  }
+  .review .user {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .review .rating {
+    margin-bottom: 5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Leave a Review for Our Hotel</h1>
+  <form id="reviewForm">
+    <input type="text" id="username" placeholder="Your Name" required>
+    <div class="rating">
+      <input type="radio" id="star5" name="rating" value="5"><label for="star5"></label>
+      <input type="radio" id="star4" name="rating" value="4"><label for="star4"></label>
+      <input type="radio" id="star3" name="rating" value="3"><label for="star3"></label>
+      <input type="radio" id="star2" name="rating" value="2"><label for="star2"></label>
+      <input type="radio" id="star1" name="rating" value="1"><label for="star1"></label>
+    </div>
+    <textarea id="reviewText" placeholder="Write your review here..." required></textarea>
+    <button type="submit">Submit Review</button>
+  </form>
+
+  <div id="reviews">
+    <!-- Reviews will be dynamically added here -->
+  </div>
+</div>
+
+<script>
+  document.getElementById("reviewForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const username = document.getElementById('username').value;
+    const rating = document.querySelector('input[name="rating"]:checked');
+    const reviewText = document.getElementById('reviewText').value;
+    
+    if (username.trim() === "") {
+      alert("Please enter your name.");
+      return;
+    }
+    if (rating === null) {
+      alert("Please select a rating.");
+      return;
+    }
+    if (reviewText.trim() === "") {
+      alert("Please write your review.");
+      return;
+    }
+
+    const review = document.createElement('div');
+    review.classList.add('review');
+    review.innerHTML = `
+      <div class="user">${username}</div>
+      <div class="rating">${"★".repeat(parseInt(rating.value))}</div>
+      <div class="text">${reviewText}</div>
+    `;
+    document.getElementById('reviews').appendChild(review);
+
+    // Clear the form after submission
+    document.getElementById('username').value = '';
+    document.querySelector('input[name="rating"]:checked').checked = false;
+    document.getElementById('reviewText').value = '';
+  });
+</script>
+
+</body>
+</html>
